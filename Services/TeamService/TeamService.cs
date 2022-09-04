@@ -19,6 +19,27 @@ namespace dotnet_epl.Services.TeamService
         _context = context;
         _mapper = mapper;
     }
+
+    public async Task<ServiceResponse<GetTeamDto>> Create(CreateTeamDto newTeam)
+    {
+      var response = new ServiceResponse<GetTeamDto>();
+      Team team =  _mapper.Map<Team>(newTeam);
+      _context.Teams.Add(team);
+      await _context.SaveChangesAsync();
+      response.Data = _mapper.Map<GetTeamDto>(team);
+      return response;
+    }
+
+    public async Task<ServiceResponse<GetTeamDto>> Delete(int id)
+    {
+      var response = new ServiceResponse<GetTeamDto>();
+      var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == id);
+      _context.Teams.Remove(team!);
+      await _context.SaveChangesAsync();
+      response.Data = _mapper.Map<GetTeamDto>(team);
+      return response;
+    }
+
     public async Task<ServiceResponse<List<GetTeamDto>>> Get()
     {
       var respone = new ServiceResponse<List<GetTeamDto>>();
@@ -122,6 +143,27 @@ namespace dotnet_epl.Services.TeamService
       }
 
       response.Data = teams.Select(t => _mapper.Map<GetSeasonTeamDto>(t)).OrderByDescending(t => t.Points).ToList();
+      return response;
+    }
+    public async Task<ServiceResponse<GetTeamDto>> GetWithId(int id)
+    {
+      var response = new ServiceResponse<GetTeamDto>();
+      var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == id);
+      response.Data = _mapper.Map<GetTeamDto>(team);
+      return response;
+    }
+
+    public async Task<ServiceResponse<GetTeamDto>> Update(UpdateTeamDto updatedTeam)
+    {
+      var response = new ServiceResponse<GetTeamDto>();
+      var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == updatedTeam.Id);
+      
+      team!.Name = updatedTeam.Name;
+      team.AttackValue = updatedTeam.AttackValue;
+      team.DefenceValue = updatedTeam.DefenceValue;
+
+      await _context.SaveChangesAsync();
+      response.Data = _mapper.Map<GetTeamDto>(team);
       return response;
     }
   }

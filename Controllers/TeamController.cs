@@ -23,6 +23,26 @@ namespace dotnet_epl.Controllers
         {
             return Ok(await _teamService.Get());
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<GetTeamDto>>> GetWithId(int id)
+        {
+            return Ok(await _teamService.GetWithId(id));
+        }
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<GetTeamDto>>> Create(CreateTeamDto newTeam)
+        {
+            return Ok(await _teamService.Create(newTeam));
+        }
+        [HttpDelete]
+        public async Task<ActionResult<ServiceResponse<GetTeamDto>>> Delete(int id)
+        {
+            return Ok(await _teamService.Delete(id));
+        }
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<GetTeamDto>>> Update(UpdateTeamDto uptadedTeam)
+        {
+            return Ok(await _teamService.Update(uptadedTeam));
+        }
         [HttpGet("season/random")]
         public async Task<ActionResult<ServiceResponse<List<GetSeasonTeamDto>>>> GetSeasonRandom()
         {

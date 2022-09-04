@@ -14,6 +14,7 @@ namespace dotnet_epl
         {
             CreateMap<Team, GetTeamDto>();
             CreateMap<Team, GetSeasonTeamDto>();
+            CreateMap<CreateTeamDto, Team>();
         }
     }
 }
